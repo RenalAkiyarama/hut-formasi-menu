@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Pemilihan Menu & Konfirmasi Kehadiran HUT FORMASI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0eb;--card:#fff;--primary:#6b4c3b;--accent:#d4a574;--text:#3d3028;--text2:#7a6b5d;--border:#e0d5cc;--error:#c0392b;--success:#27ae60;--shadow:0 4px 20px rgba(107,76,59,.08);--r:16px;--rs:12px;--t:all .3s cubic-bezier(.4,0,.2,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;padding:20px 16px 40px}
+.container{max-width:480px;margin:0 auto}
+.header{text-align:center;margin-bottom:32px;padding:32px 24px;background:linear-gradient(135deg,var(--primary),#8b6f5e);border-radius:var(--r);color:#fff;box-shadow:var(--shadow)}
+.header h1{font-size:1.5rem;font-weight:700;line-height:1.3;margin-bottom:12px}
+.header p{font-size:.9rem;opacity:.9;font-weight:300}
+.card{background:var(--card);border-radius:var(--r);padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.section-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:16px;display:block}
+.field-label{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;gap:6px}
+.required{color:var(--error);font-weight:700}
+.helper-text{font-size:.8rem;color:var(--text2);font-style:italic}
+.input-text{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--rs);font-family:inherit;font-size:.95rem;color:var(--text);background:#faf8f6;transition:var(--t);outline:none}
+.input-text:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(212,165,116,.15)}
+.input-text.error{border-color:var(--error)}
+.error-message{font-size:.8rem;color:var(--error);margin-top:6px;display:none}
+.error-message.show{display:block}
+.selectable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.selectable-card,.payment-card{position:relative;cursor:pointer;display:block}
+.selectable-card input,.payment-card input{position:absolute;opacity:0;width:0;height:0}
+.card-content,.pay-content{position:relative;padding:16px 14px;border:2px solid var(--border);border-radius:var(--rs);text-align:center;transition:var(--t);background:#faf8f6}
+.card-icon,.pay-icon{font-size:2rem;margin-bottom:6px;display:block}
+.card-title,.pay-label{font-size:.85rem;font-weight:600;line-height:1.3}
+.selectable-card:hover .card-content,.payment-card:hover .pay-content{border-color:var(--accent);transform:translateY(-2px)}
+input:checked+.card-content,input:checked+.pay-content{border-color:var(--primary);background:linear-gradient(135deg,#fdf8f4,#f5efe8);box-shadow:0 4px 16px rgba(107,76,59,.15)}
+input:checked+.card-content::after,input:checked+.pay-content::after{content:'✓';position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+.other-option-wrapper{grid-column:1/-1}
+.other-input-row{margin-top:12px}
+.toggle-group{display:flex;gap:12px}
+.toggle-btn{flex:1;padding:14px 20px;border:2px solid var(--border);border-radius:var(--rs);background:#faf8f6;font-family:inherit;font-size:.95rem;font-weight:600;color:var(--text2);cursor:pointer;transition:var(--t)}
+.toggle-btn:hover{border-color:var(--accent);color:var(--text)}
+.toggle-btn.active{border-color:var(--success);background:linear-gradient(135deg,#e8f8ef,#d4f0e0);color:var(--success)}
+.toggle-btn.active::after{content:' ✓'}
+.payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--rs);padding:28px 20px;text-align:center;cursor:pointer;transition:var(--t);background:#faf8f6}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:#fdf8f4}
+.upload-zone.has-file{border:2px solid var(--success);background:#e8f8ef}
+.upload-icon{font-size:2.5rem;display:block;margin-bottom:6px}
+.upload-text{font-size:.9rem;font-weight:500;color:var(--text2)}
+.upload-hint{font-size:.75rem;color:var(--text2);opacity:.7}
+.upload-zone input{display:none}
+.file-name{font-size:.85rem;color:var(--success);font-weight:600;margin-top:8px;display:none;word-break:break-all}
+.file-name.show{display:block}
+.conditional-section{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s,opacity .4s,margin .4s;margin-top:0}
+.conditional-section.visible{max-height:500px;opacity:1;margin-top:20px}
+.btn-group{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.btn-primary{width:100%;padding:16px 24px;background:linear-gradient(135deg,var(--primary),#8b6f5e);color:#fff;border:none;border-radius:var(--rs);font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:var(--t);box-shadow:0 4px 16px rgba(107,76,59,.3)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary:disabled{opacity:.6;cursor:wait;transform:none}
+.btn-secondary{width:100%;padding:14px 24px;background:transparent;color:var(--text2);border:2px solid var(--border);border-radius:var(--rs);font-family:inherit;font-size:.9rem;font-weight:500;cursor:pointer;transition:var(--t)}
+.btn-secondary:hover{border-color:var(--error);color:var(--error);background:#fef2f2}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--success);color:#fff;padding:14px 28px;border-radius:50px;font-size:.9rem;font-weight:600;box-shadow:0 8px 30px rgba(39,174,96,.3);z-index:1000;transition:transform .4s;max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.err{background:var(--error)}
+.footer-note{text-align:center;font-size:.7rem;color:var(--text2);margin-top:24px;opacity:.7}
+@media(min-width:481px){body{padding:40px 20px 60px}.header h1{font-size:1.7rem}.selectable-grid{grid-template-columns:repeat(3,1fr)}}
+*:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Form Pemilihan Menu & Konfirmasi Kehadiran HUT FORMASI</h1>
+    <p>Wajib diisi untuk pemilihan menu makan saat HUT FORMASI nanti yaaa 🥰</p>
+  </div>
+
+  <form id="orderForm" novalidate>
+    <div class="card">
+      <span class="section-label">Data Diri</span>
+      <label class="field-label" for="namaLengkap">Nama Lengkap <span class="required">*</span></label>
+      <input type="text" class="input-text" id="namaLengkap" placeholder="Masukkan nama lengkap Anda" required>
+      <div class="error-message" id="namaError">Nama lengkap wajib diisi.</div>
+    </div>
+
+    <div class="card">
+      <span class="section-label">Kehadiran</span>
+      <label class="field-label">Konfirmasi Kehadiran <span class="required">*</span></label>
+      <div class="toggle-group">
+        <button type="button" class="toggle-btn" data-value="Hadir" onclick="setAttendance(this)">Hadir</button>
+      </div>
+      <input type="hidden" id="kehadiran" value="">
+      <div class="error-message" id="kehadiranError">Konfirmasi kehadiran wajib dipilih.</div>
+    </div>
+
+    <div class="card">
+      <span class="section-label">Menu Konsumsi</span>
+      <label class="field-label">Pilihan Menu Konsumsi <span class="required">*</span></label>
+      <div class="selectable-grid">
+        <label class="selectable-card"><input type="radio" name="menu" value="Nasi Goreng Triple S"><div class="card-content"><span class="card-icon">🍳</span><span class="card-title">Nasi Goreng Triple S</span></div></label>
+        <label class="selectable-card"><input type="radio" name="menu" value="Nasi Telur Triple S"><div class="card-content"><span class="card-icon">🥚</span><span class="card-title">Nasi Telur Triple S</span></div></label>
+        <label class="selectable-card"><input type="radio" name="menu" value="Nasi Gila"><div class="card-content"><span class="card-icon">🌶️</span><span class="card-title">Nasi Gila</span></div></label>
+        <div class="other-option-wrapper">
+          <label class="selectable-card"><input type="radio" name="menu" value="other" id="menuOtherRadio"><div class="card-content"><span class="card-icon">✏️</span><span class="card-title">Yang lain:</span></div></label>
+          <div class="other-input-row" id="otherInputRow" style="display:none">
+            <input type="text" class="input-text" id="menuOtherText" placeholder="Tulis menu lainnya...">
+          </div>
+        </div>
+      </div>
+      <div class="error-message" id="menuError">Pilih salah satu menu konsumsi.</div>
+    </div>
+
+    <div class="card">
+      <span class="section-label">Pembayaran</span>
+      <label class="field-label">Metode Pembayaran <span class="required">*</span></label>
+      <p class="helper-text">Jika cash dapat melalui Rangga</p>
+      <div class="payment-grid">
+        <label class="payment-card"><input type="radio" name="payment" value="Cash"><div class="pay-content"><span class="pay-icon">💵</span><span class="pay-label">Cash</span></div></label>
+        <label class="payment-card"><input type="radio" name="payment" value="Transfer" id="paymentTransfer"><div class="pay-content"><span class="pay-icon">📱</span><span class="pay-label">Transfer</span></div></label>
+      </div>
+      <div class="error-message" id="paymentError">Pilih metode pembayaran.</div>
+
+      <div class="conditional-section" id="uploadSection">
+        <label class="field-label">Bukti Pembayaran Via Transfer <span class="required">*</span></label>
+        <div class="upload-zone" id="uploadZone">
+          <span class="upload-icon">📤</span>
+          <div class="upload-text">Klik atau seret file ke sini</div>
+          <div class="upload-hint">JPG, PNG, atau PDF (maks. 5 MB)</div>
+          <input type="file" id="buktiFile" accept="image/*,.pdf">
+          <div class="file-name" id="fileName"></div>
+        </div>
+        <div class="error-message" id="uploadError">Bukti transfer wajib diunggah.</div>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn-primary" id="submitBtn">Kirim</button>
+      <button type="button" class="btn-secondary" id="resetBtn">Kosongkan Formulir</button>
+    </div>
+  </form>
+
+  <p class="footer-note">HUT FORMASI &copy; 2026</p>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// Ganti dengan URL Web App Google Apps Script / endpoint Anda.
+// Jika dikosongkan, data hanya ditampilkan di console (mode uji coba).
+const ENDPOINT_URL = "";
+
+const $ = id => document.getElementById(id);
+const form = $("orderForm");
+let selectedFile = null;
+
+function setAttendance(btn){
+  const on = !btn.classList.contains("active");
+  btn.classList.toggle("active", on);
+  $("kehadiran").value = on ? btn.dataset.value : "";
+  $("kehadiranError").classList.remove("show");
+}
+
+document.querySelectorAll('input[name="menu"]').forEach(r => r.addEventListener("change", () => {
+  const other = $("menuOtherRadio").checked;
+  $("otherInputRow").style.display = other ? "block" : "none";
+  if (other) $("menuOtherText").focus();
+  $("menuError").classList.remove("show");
+}));
+
+document.querySelectorAll('input[name="payment"]').forEach(r => r.addEventListener("change", () => {
+  $("uploadSection").classList.toggle("visible", $("paymentTransfer").checked);
+  $("paymentError").classList.remove("show");
+}));
+
+const zone = $("uploadZone"), fileInput = $("buktiFile");
+zone.addEventListener("click", () => fileInput.click());
+["dragover","dragenter"].forEach(e => zone.addEventListener(e, ev => {ev.preventDefault(); zone.classList.add("dragover");}));
+["dragleave","drop"].forEach(e => zone.addEventListener(e, ev => {ev.preventDefault(); zone.classList.remove("dragover");}));
+zone.addEventListener("drop", ev => handleFile(ev.dataTransfer.files[0]));
+fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
+
+function handleFile(file){
+  if (!file) return;
+  if (file.size > 5*1024*1024){ showToast("Ukuran file maksimal 5 MB", true); return; }
+  selectedFile = file;
+  zone.classList.add("has-file");
+  $("fileName").textContent = "📎 " + file.name;
+  $("fileName").classList.add("show");
+  $("uploadError").classList.remove("show");
+}
+
+function showToast(msg, isErr){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.toggle("err", !!isErr);
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+function validate(){
+  let ok = true;
+  const nama = $("namaLengkap");
+  const bad = (cond, input, err) => { if (cond){ ok = false; err.classList.add("show"); if(input){input.classList.add("error"); setTimeout(()=>input.classList.remove("error"),500);} } else { err.classList.remove("show"); } };
+  bad(!nama.value.trim(), nama, $("namaError"));
+  bad(!$("kehadiran").value, null, $("kehadiranError"));
+  const menu = document.querySelector('input[name="menu"]:checked');
+  const otherEmpty = menu && menu.value === "other" && !$("menuOtherText").value.trim();
+  bad(!menu || otherEmpty, null, $("menuError"));
+  const pay = document.querySelector('input[name="payment"]:checked');
+  bad(!pay, null, $("paymentError"));
+  bad(pay && pay.value === "Transfer" && !selectedFile, null, $("uploadError"));
+  if (!ok) document.querySelector(".error-message.show")?.scrollIntoView({block:"center"});
+  return ok;
+}
+
+const toBase64 = f => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload = () => res(r.result.split(",")[1]);
+  r.onerror = rej;
+  r.readAsDataURL(f);
+});
+
+function resetAll(){
+  form.reset();
+  selectedFile = null;
+  $("kehadiran").value = "";
+  document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+  $("otherInputRow").style.display = "none";
+  $("uploadSection").classList.remove("visible");
+  zone.classList.remove("has-file");
+  $("fileName").classList.remove("show");
+  document.querySelectorAll(".error-message").forEach(e => e.classList.remove("show"));
+}
+
+$("resetBtn").addEventListener("click", () => { if (confirm("Kosongkan semua isian?")) resetAll(); });
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!validate()) return;
+  const menu = document.querySelector('input[name="menu"]:checked').value;
+  const pay = document.querySelector('input[name="payment"]:checked').value;
+  const data = {
+    nama: $("namaLengkap").value.trim(),
+    kehadiran: $("kehadiran").value,
+    menu: menu === "other" ? $("menuOtherText").value.trim() : menu,
+    pembayaran: pay,
+    waktu: new Date().toLocaleString("id-ID")
+  };
+  const btn = $("submitBtn");
+  btn.disabled = true; btn.textContent = "Mengirim...";
+  try {
+    if (pay === "Transfer" && selectedFile){
+      data.bukti = { name: selectedFile.name, type: selectedFile.type, base64: await toBase64(selectedFile) };
+    }
+    if (ENDPOINT_URL){
+      await fetch(ENDPOINT_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(data) });
+    } else {
+      console.log("Data (mode uji coba):", data);
+    }
+    showToast("Terima kasih! Data berhasil dikirim 🎉");
+    resetAll();
+  } catch (err){
+    console.error(err);
+    showToast("Gagal mengirim, coba lagi.", true);
+  } finally {
+    btn.disabled = false; btn.textContent = "Kirim";
+  }
+});
+</script>
+</body>
+</html>
